@@ -24,7 +24,7 @@ def main():
         high_prices = df_data.loc[:,'2. high'].values
         low_prices = df_data.loc[:,'3. low'].values
         scaler = MinMaxScaler()
-        high_prices_scaled = scaler.fit_transform(high_prices.reshape(-1,1)) # this expects numpy array
+        high_prices_scaled = scaler.fit_transform(high_prices.reshape(-1,1))
         low_prices_scaled = scaler.fit_transform(low_prices.reshape(-1,1))
         split = int(0.8 * len(high_prices_scaled))
         high_price_train, high_price_test = high_prices_scaled[:split], high_prices_scaled[split:]
