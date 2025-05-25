@@ -3,10 +3,11 @@ import pandas as pd
 import awswrangler as wr
 from sklearn.preprocessing import MinMaxScaler
 import matplotlib.pyplot as plt
-from tensorflow.python.keras.layers import LSTM, Dense,Dropout
+from tensorflow.python.keras.layers import LSTM, Dense,Dropout,Input,Conv1D
 from tensorflow.python.keras.models import Sequential
 from sklearn.metrics import mean_squared_error
-from statsmodels.tsa.arima.model import ARIMA
+from prophet import Prophet
+import numpy as np
 
 
 
@@ -17,12 +18,20 @@ def get_raw_data(stock_name):
     df['timestamp'] = pd.to_datetime(df['timestamp'])  # Ensure timestamp is in datetime format
     return df
 
+def create_sequences(data, seq_length):
+    X, y = [], []
+    for i in range(len(data) - seq_length):
+        X.append(data[i:i + seq_length])
+        y.append(data[i + seq_length])
+    return np.array(X), np.array(y)
+
 def premilinary_analysis():
     stocks = ['IBM', 'AAPL']
     for stock in stocks:
         df_data = get_raw_data(stock)
 
     # Split data into training and testing sets
+        timestamps = df_data['timestamp'].values
         high_prices = df_data.loc[:,'2. high'].values
         low_prices = df_data.loc[:,'3. low'].values
         scaler = MinMaxScaler()
@@ -31,6 +40,8 @@ def premilinary_analysis():
         split = int(0.8 * len(high_prices_scaled))
         high_price_train, high_price_test = high_prices_scaled[:split], high_prices_scaled[split:]
         low_price_train, low_price_test = low_prices_scaled[:split], low_prices_scaled[split:]
+        timestamp_train, timestamp_test = timestamps[:split], timestamps[split:]
+        return high_price_train,high_price_test,low_price_train,low_price_test,timestamp_test,timestamp_train
         
 def define_model(high_price_train):
     model = Sequential()
@@ -50,8 +61,18 @@ def fit_model(model,high_price_train,low_price_train,scaler):
     mse = mean_squared_error(actual, predictions)
     return mse
 
-class Arima_model():
+class tcn_model():
     def __init__(self):
+        model = Sequential([
+            Input(shape=(10,1)),
+            Conv1D(64,kernel_size=4,padding="casual",activation='relu'),
+            Dense(1)
+
+        ]
+        )
+        model.compile(optimizer='adam',loss='mse')
+        
+        
         
 
 
