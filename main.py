@@ -1,14 +1,8 @@
 from airflow import DAG
 from datetime import datetime
-from get_data import get_raw_data
-from transform import transform_data
-from linear_regression import get_data
+from .get_data import get_data
 from airflow.operators.python import PythonOperator
 
-with DAG("my_dag",start_date=datetime(2021,1,1),schedule_interval="@daily",catchup=False) as dag:
-    get_raw_data = PythonOperator(task_id="raw_data",python_callable=get_raw_data)
-    transform_data = PythonOperator(task_id="transform_data",python_callable=transform_data)
-    get_data = PythonOperator(task_id="get_data",python_callable=get_data)
-
-
-    get_raw_data >> transform_data >> get_data
+with DAG("Stock_Data",start_date=datetime(2025,5,31),schedule_interval='0 21 * * 1,3,5',catchup=False) as dag:
+    get_raw_data = PythonOperator(task_id="get_stock_data",python_callable=get_data)
+    get_raw_data
