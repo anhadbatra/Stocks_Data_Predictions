@@ -1,22 +1,26 @@
 import tensorflow as tf
 import pandas as pd
-import awswrangler as wr
 from sklearn.preprocessing import MinMaxScaler
 import matplotlib.pyplot as plt
 from tensorflow.python.keras.layers import LSTM, Dense,Dropout,Input,Conv1D
 from tensorflow.python.keras.models import Sequential
 from sklearn.metrics import mean_squared_error
-from prophet import Prophet
 import numpy as np
+import snowflake.connector
+import os 
 
 
 
-def get_raw_data(stock_name):
-    # Replace with your bucket and path
-    s3_path = f"s3://financialdatastocks/{stock_name}.csv"
-    df = wr.s3.read_csv(s3_path)
-    df['timestamp'] = pd.to_datetime(df['timestamp'])  # Ensure timestamp is in datetime format
-    return df
+def connection():
+    conn = snowflake.connector.connect(user = os.environ.get('SNOWFLAKE_USER'),
+                                    password = os.environ.get('SNOWFLAKE_PASSWORD'),
+                                    account = os.environ.get('SNOWFLAKE_ACCOUNT'),
+                                    warehouse = os.environ.get('SNOWFLAKE_WAREHOUSE'),
+                                    database = os.environ.get('SNOWFLAKE_DATABASE'),
+                                    schema = os.environ.get('SNOWFLAKE_SCHEMA')
+
+
+)
 
 def create_sequences(data, seq_length):
     X, y = [], []
@@ -26,8 +30,6 @@ def create_sequences(data, seq_length):
     return np.array(X), np.array(y)
 
 def premilinary_analysis():
-    stocks = ['IBM', 'AAPL']
-    for stock in stocks:
         df_data = get_raw_data(stock)
 
     # Split data into training and testing sets
