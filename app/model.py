@@ -87,6 +87,10 @@ class tcn_model:
     def fit(self,model,X,y):
         self.model.fit(X,y,epochs=5,batch_size=32)
     def predict(self,X):
+        return X
+
+def combine_model():
+    
         
 
         
@@ -100,8 +104,7 @@ class tcn_model:
 
 
 if __name__ == '__main__':
-    g
-
+    
 
 
 
