@@ -1,0 +1,31 @@
+[0m12:22:30.406228 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'start', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x000002752A8BC6A0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x000002752B750220>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x000002752B750430>]}
+
+
+============================== 12:22:30.421213 | 8ebe1a2d-ca84-4133-b458-a2eff21f7788 ==============================
+[0m12:22:30.421213 [info ] [MainThread]: Running with dbt=1.9.6
+[0m12:22:30.424224 [debug] [MainThread]: running dbt with arguments {'printer_width': '80', 'indirect_selection': 'eager', 'write_json': 'True', 'log_cache_events': 'False', 'partial_parse': 'True', 'cache_selected_only': 'False', 'profiles_dir': 'C:\\Users\\itisa\\.dbt', 'debug': 'False', 'fail_fast': 'False', 'log_path': 'logs', 'version_check': 'True', 'warn_error': 'None', 'use_colors': 'True', 'use_experimental_parser': 'False', 'no_print': 'None', 'quiet': 'False', 'empty': 'None', 'log_format': 'default', 'introspect': 'True', 'warn_error_options': 'WarnErrorOptions(include=[], exclude=[])', 'invocation_command': 'dbt init fact_table_stocks', 'target_path': 'None', 'static_parser': 'True', 'send_anonymous_usage_stats': 'True'}
+[0m12:22:30.502211 [warn ] [MainThread]: [ConfigFolderDirectory]: Unable to parse logging event dictionary. Failed to parse dir field: expected string or bytes-like object.. Dictionary: {'dir': WindowsPath('C:/Users/itisa/.dbt')}
+[0m12:22:30.504207 [info ] [MainThread]: Creating dbt configuration folder at 
+[0m12:22:30.510593 [debug] [MainThread]: Starter project path: D:\Stocks_Data\.venv\lib\site-packages\dbt\include\starter_project
+[0m12:22:30.704160 [info ] [MainThread]: 
+Your new dbt project "fact_table_stocks" was created!
+
+For more information on how to configure the profiles.yml file,
+please consult the dbt documentation here:
+
+  https://docs.getdbt.com/docs/configure-your-profile
+
+One more thing:
+
+Need help? Don't hesitate to reach out to us via GitHub issues or on Slack:
+
+  https://community.getdbt.com/
+
+Happy modeling!
+
+[0m12:22:30.707157 [info ] [MainThread]: Setting up your profile.
+[0m12:25:46.230136 [info ] [MainThread]: Profile fact_table_stocks written to C:\Users\itisa\.dbt\profiles.yml using target's profile_template.yml and your supplied values. Run 'dbt debug' to validate the connection.
+[0m12:25:46.231069 [debug] [MainThread]: Command `dbt init` succeeded at 12:25:46.231069 after 196.11 seconds
+[0m12:25:46.232068 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'end', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x000002752A8BC6A0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x000002752B751450>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x000002752B750E80>]}
+[0m12:25:46.232068 [debug] [MainThread]: Flushing usage events
+[0m12:25:46.397144 [debug] [MainThread]: An error was encountered while trying to flush usage events

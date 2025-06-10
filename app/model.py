@@ -90,6 +90,7 @@ class tcn_model:
         return X
 
 def combine_model():
+    pass
     
         
 
@@ -104,6 +105,7 @@ def combine_model():
 
 
 if __name__ == '__main__':
+    combine_model()
     
 
 
