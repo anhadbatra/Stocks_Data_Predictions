@@ -1,0 +1,29 @@
+version: 2
+
+sources:
+  - name: stock_dm
+    database: STOCK_PROJECT
+    schema: STOCK_DM
+    tables:
+      - name: stock_dm
+
+  - name: sentiment_dm
+    database: STOCK_PROJECT
+    schema: SENTIMENT_DM
+    tables:
+      - name: sentiment_analysis
+  
+  - name: stock_facttable
+    database: STOCK_PROJECT
+    schema: 
+    tables:
+      - name: sentiment_analysis
+  
+
+models:
+  - name: fact_stock_sentiment
+    description: "Fact table combining stock and sentiment data"
+    columns:
+      - name: date_key
+        tests:
+          - not_null
