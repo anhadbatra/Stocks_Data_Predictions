@@ -44,4 +44,4 @@ combined AS (
         ON stock.timestamp = sentiment.date
 )
 
-SELECT * FROM combined
+SELECT * FROM combined;
