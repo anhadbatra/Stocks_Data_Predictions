@@ -2,13 +2,15 @@ import tensorflow as tf
 import pandas as pd
 from sklearn.preprocessing import MinMaxScaler
 import matplotlib.pyplot as plt
-from tensorflow.python.keras.layers import LSTM, Dense,Dropout,Input,Conv1D
-from tensorflow.python.keras.models import Sequential
+from tensorflow.keras.layers import LSTM, Dense,Dropout,Input,Conv1D
+from tensorflow.keras.models import Sequential
 from sklearn.metrics import mean_squared_error
 import numpy as np
 import snowflake.connector
 import os 
+from dotenv import load_dotenv
 
+load_dotenv()
 
 
 def connection():
@@ -16,8 +18,8 @@ def connection():
                                     password = os.environ.get('SNOWFLAKE_PASSWORD'),
                                     account = os.environ.get('SNOWFLAKE_ACCOUNT'),
                                     warehouse = os.environ.get('SNOWFLAKE_WAREHOUSE'),
-                                    database = os.environ.get('SNOWFLAKE_DATABASE'),
-                                    schema = os.environ.get('SNOWFLAKE_SCHEMA')
+                                    database = 'STOCK_FACTTABLE_FINAL_DM',
+                                    schema = 'STOCK_DM'
     
     
 )
@@ -25,10 +27,10 @@ def connection():
 
 def get_data():
     cursor = connection()
-    query = """
-    SELECT * FROM STOCK_DATA_DW LIMIT 30;
-"""
-    data = cursor.execute(query)
+    #cursor.execute("USE DATABASE STOCK_FACTTABLE_FINAL_DM")
+    cursor.execute("SELECT * FROM stock_project.stock_facttable_final_dm.stock_dm LIMIT 30;")
+    df = pd.DataFrame(cursor.fetchall(), columns=[col[0] for col in cursor.description])
+    return df
     
 def create_sequences(features,target, seq_length):
     X, y = [], []
@@ -46,29 +48,31 @@ def preliminary_analysis():
 
     scaler = MinMaxScaler()
     scaled_data = scaler.fit_transform(features)
-    scaled_target = scaler.fit_transform(features['CLOSE'])
-    X,y = create_sequences(scaled_data,scaled_target,seq_length=10)
-    split = int(0.8 * len(df_data))
+    scaled_target = scaler.fit_transform(target.values.reshape(-1,1))
+    X,y = create_sequences(scaled_data,scaled_target,seq_length=3)
+    split = int(0.8 * min(len(X),len(y)))
     X_train = X[:split]
     X_test = X[split:]
     y_train = y[:split]
     y_test = y[split:]
-    return X_train,X_test, y_train,y_test
+    print("X_train:", X_train.shape, "y_train:", y_train.shape)
+    print("X_test:", X_test.shape, "y_test:", y_test.shape)
+    return X_train,X_test, y_train,y_test,scaler
 
         
-def define_model(df_train):
+def define_model(X_train):
     model = Sequential()
-    model.add(LSTM(50,return_sequences=True,input_shape=df_train.shape[1]))
+    model.add(LSTM(50,return_sequences=True,input_shape=(X_train.shape[1],X_train.shape[2])))
     model.add(Dropout(0.2))
     model.add(LSTM(50))
     model.add(Dropout(0.2))
     model.add(Dense(1))
-    model = model.compile(optimizer='adam',metrics=['accuracy'])
+    model.compile(optimizer='adam',loss='mean_squared_error')
     return model
 
 def fit_model(model,X_train,y_train,X_test,y_test,scaler):
     model.fit(X_train,y_train,epochs=5,batch_size=32)
-    predictions = model.predict()
+    predictions = model.predict(X_test)
     predictions = scaler.inverse_transform(predictions)
     actual = scaler.inverse_transform(y_test)
     mse = mean_squared_error(actual, predictions)
@@ -91,24 +95,8 @@ class tcn_model:
 
 def combine_model():
     pass
-    
-        
-
-        
-        
-        
-
-
-
-
-
-
-
 if __name__ == '__main__':
-    combine_model()
-    
-
-
-
-
-
+    X_train,y_train,X_test,y_test,scaler = preliminary_analysis()
+    model = define_model(X_train)
+    predictions,mse = fit_model(model,X_train,X_test, y_train,y_test,scaler)
+    print(predictions,mse)
