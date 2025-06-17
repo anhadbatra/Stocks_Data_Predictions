@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from app.predict import model_save
+from predict import predict
 from fastapi.responses import JSONResponse
 
 app = FastAPI(title="Stock Prediction API")
@@ -10,5 +10,6 @@ def root():
 
 @app.get("/predict-lstm")
 def get_lstm_prediction():
-    predictions, mse = model_save()
+    predictions, mse = predict()
     return JSONResponse(content={"predictions": predictions, "mse": mse})
+

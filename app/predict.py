@@ -1,7 +1,6 @@
 import tensorflow as tf
 import pandas as pd
 from sklearn.preprocessing import MinMaxScaler
-import matplotlib.pyplot as plt
 from tensorflow.keras.layers import LSTM, Dense,Dropout,Input,Conv1D,Concatenate
 from tensorflow.keras.models import Sequential
 from sklearn.metrics import mean_squared_error
@@ -79,12 +78,10 @@ def fit_model(model,X_train,y_train,X_test,y_test,scaler):
     mse = mean_squared_error(actual, predictions)
     return predictions , mse
 
-def model_save():
+def predict():
     X_train,y_train,X_test,y_test,scaler = preliminary_analysis()
     model = define_model(X_train)
     predictions,mse = fit_model(model,X_train,X_test, y_train,y_test,scaler)
-    model.save("lstm_model.h5")
-    joblib.dump(scaler,"scaler.save")
     return predictions,mse
 
     
