@@ -2,13 +2,14 @@ import tensorflow as tf
 import pandas as pd
 from sklearn.preprocessing import MinMaxScaler
 import matplotlib.pyplot as plt
-from tensorflow.keras.layers import LSTM, Dense,Dropout,Input,Conv1D
+from tensorflow.keras.layers import LSTM, Dense,Dropout,Input,Conv1D,Concatenate
 from tensorflow.keras.models import Sequential
 from sklearn.metrics import mean_squared_error
 import numpy as np
 import snowflake.connector
 import os 
 from dotenv import load_dotenv
+import joblib
 
 load_dotenv()
 
@@ -78,25 +79,12 @@ def fit_model(model,X_train,y_train,X_test,y_test,scaler):
     mse = mean_squared_error(actual, predictions)
     return predictions , mse
 
-class tcn_model:
-    def __init__(self):
-        model = Sequential([
-            Input(shape=(10,1)),
-            Conv1D(64,kernel_size=4,padding="casual",activation='relu'),
-            Dense(1)
-
-        ]
-        )
-        model.compile(optimizer='adam',loss='mse')
-    def fit(self,model,X,y):
-        self.model.fit(X,y,epochs=5,batch_size=32)
-    def predict(self,X):
-        return X
-
-def combine_model():
-    pass
-if __name__ == '__main__':
+def model_save():
     X_train,y_train,X_test,y_test,scaler = preliminary_analysis()
     model = define_model(X_train)
     predictions,mse = fit_model(model,X_train,X_test, y_train,y_test,scaler)
-    print(predictions,mse)
+    model.save("lstm_model.h5")
+    joblib.dump(scaler,"scaler.save")
+    return predictions,mse
+
+    
