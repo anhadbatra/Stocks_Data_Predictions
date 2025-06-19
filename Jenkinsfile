@@ -1,6 +1,13 @@
 pipeline{
     agent any
+    environment {
+        DOCKERHUB_CREDENTIALS = credentials('23db5d07-30ea-4456-b89f-1a3a8da21fb9')
+    }
     stages {
+            stage('Login') {
+            steps {
+                bat "docker login -u %DOCKERHUB_CREDENTIALS_USR% -p %DOCKERHUB_CREDENTIALS_PSW%"
+            }
         stage('Build') {
             steps {
                 bat 'docker build -t financial_model:1.0 .'
@@ -8,7 +15,7 @@ pipeline{
         }
         stage('Push') {
             steps {
-                bat 'docker push financial_model:1.0'
+                bat 'docker push anhadbatra/financial_model:1.0'
             }
         }
     }
