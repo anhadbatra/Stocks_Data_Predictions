@@ -11,12 +11,12 @@ pipeline {
         }
         stage('Build') {
             steps {
-                bat 'docker build -t yourusername/financial_model:1.0 .'
+                bat 'docker build -t anhadbatra/financial_model:1.0 .'
             }
         }
         stage('Push') {
             steps {
-                bat 'docker push yourusername/financial_model:1.0'
+                bat 'docker push anhadbatra/financial_model:1.0'
             }
         }
     }
