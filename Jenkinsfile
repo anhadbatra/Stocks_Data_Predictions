@@ -11,8 +11,5 @@ pipeline{
                 sh 'docker push financial_model:1.0'
             }
         }
-        stage('Deploy') {
-            
-        }
     }
 }
