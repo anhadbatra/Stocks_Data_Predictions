@@ -31,15 +31,13 @@ This project integrates data engineering, ML modeling, and MLOps to build a real
 
 ---
 
-## 📐 System Architecture
-
----
-
 ## 📂 Project Structure
 app - Model File and FastAPI File
 dags - Airflow DAGS file for orchistration 
+images - Images of Project
 fact_table_stocks - DBT files
 K8 - Kubenetes Files
 Dockerfile 
+
 
 
