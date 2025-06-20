@@ -121,3 +121,4 @@ Pull requests welcome! For major changes, please open an issue first to discuss 
 Below is a successful `curl` request to the deployed model endpoint on Kubernetes using Minikube:
 
 ![Alt text](https://github.com/anhadbatra/Stocks_Data_Predictions/blob/main/images/Screenshot%202025-06-19%20230335.png)
+![Alt_text](https://github.com/anhadbatra/Stocks_Data_Predictions/blob/main/images/Snowflake_1.png)
