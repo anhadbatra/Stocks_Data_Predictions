@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: financial-model-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: financial-model
+  template:
+    metadata:
+      labels:
+        app: financial-model
+    spec:
+      containers:
+        - name: financial-model-container
+          image: itisanhad/financial_model:1.0
+          ports:
+            - containerPort: 8000
+          env:
+            - name: SNOWFLAKE_USER
+              valueFrom:
+                secretKeyRef:
+                  name: financial-model-secrets
+                  key: SNOWFLAKE_USER
+            - name: SNOWFLAKE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: financial-model-secrets
+                  key: SNOWFLAKE_PASSWORD
+            - name: SNOWFLAKE_ACCOUNT
+              valueFrom:
+                secretKeyRef:
+                  name: financial-model-secrets
+                  key: SNOWFLAKE_ACCOUNT
+            - name: SNOWFLAKE_WAREHOUSE
+              valueFrom:
+                secretKeyRef:
+                  name: financial-model-secrets
+                  key: SNOWFLAKE_WAREHOUSE
+            - name: SNOWFLAKE_DATABASE
+              valueFrom:
+                secretKeyRef:
+                  name: financial-model-secrets
+                  key: SNOWFLAKE_DATABASE
